@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>2D Map with Character Movement</title>
+  </head>
+  <body>
+    <canvas id="canvas" width="400" height="400"></canvas>
+
+    <script>
+      // マップの設定
+      const map = {
+        width: 400,
+        height: 400,
+        tileSize: 20,
+        tiles: [
+          [1, 1, 1, 1, 1],
+          [1, 0, 0, 0, 1],
+          [1, 0, 0, 0, 1],
+          [1, 0, 0, 0, 1],
+          [1, 1, 1, 1, 1]
+        ]
+      };
+
+      // キャラクターの初期位置
+      let characterX = 2;
+      let characterY = 2;
+
+      // キャンバスの取得
+      const canvas = document.getElementById("canvas");
+      const ctx = canvas.getContext("2d");
+
+      // マップの描画
+      function drawMap() {
+        for (let y = 0; y < map.tiles.length; y++) {
+          for (let x = 0; x < map.tiles[y].length; x++) {
+            const tile = map.tiles[y][x];
+            const color = tile === 1 ? "#333" : "#eee";
+            ctx.fillStyle = color;
+            ctx.fillRect(
+              x * map.tileSize,
+              y * map.tileSize,
+              map.tileSize,
+              map.tileSize
+            );
+          }
+        }
+      }
+
+      // キャラクターの描画
+      function drawCharacter() {
+        ctx.fillStyle = "red";
+        ctx.fillRect(
+          characterX * map.tileSize + map.tileSize / 4,
+          characterY * map.tileSize + map.tileSize / 4,
+          map.tileSize / 2,
+          map.tileSize / 2
+        );
+      }
+
+      // ゲームループ
+      function gameLoop() {
+        ctx.clearRect(0, 0, map.width, map.height);
+        drawMap();
+        drawCharacter();
+      }
+
+      // キーボードの入力処理
+      document.addEventListener("keydown", (event) => {
+        switch (event.code) {
+          case "KeyW":
+            characterY -= 1;
+            break;
+          case "KeyA":
+            characterX -= 1;
+            break;
+          case "KeyS":
+            characterY += 1;
+            break;
+          case "KeyD":
+            characterX += 1;
+            break;
+        }
+      });
+
+      // ゲームループの開始
+      setInterval(gameLoop, 1000 / 60);
+    </script>
+  </body>
+</html>
